@@ -3,48 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VISION</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>VISION TUBE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="search-bar">
-        <input type="text" class="search-input" placeholder="Search videos, audio...">
-        <button class="search-button">Search</button>
-    </div>
-    <div class="container">
-        <div class="player">
-            <video id="video-player" class="media-player" controls>
-                <source id="video-source" type="video/mp4">
-                Your browser does not support HTML5 video.
-            </video>
-            <audio id="audio-player" style="display: none;" controls>
-                <source id="audio-source" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio>
-            <div class="media-metadata">
-                <h3 class="media-title" id="media-title">Media Title</h3>
-                <p class="media-duration" id="media-duration">Duration: 00:00</p>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search videos, audio...">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-        </div>
-        <div class="playlist">
-            <div class="playlist-header">
-                <h5 class="playlist-title">Playlist</h5>
-                <div>
-                    <button id="pick-folder" class="btn" style="margin-right: 8px;">
-                        <i class="fas fa-folder-open"></i> Folder
-                    </button>
-                    <button id="refresh-playlist" class="btn">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </button>
+        </header>
+
+        <main class="main-content">
+            <section class="media-player-container">
+                <div class="video-container">
+                    <video id="video-player" controls>
+                        <source id="video-source" type="video/mp4">
+                        Your browser doesn't support HTML5 video.
+                    </video>
+                    <audio id="audio-player" controls style="display: none;">
+                        <source id="audio-source" type="audio/mp3">
+                        Your browser doesn't support the audio element.
+                    </audio>
                 </div>
-            </div>
-            <ul id="playlist-list">
-                <!-- Playlist items will be inserted here -->
-            </ul>
-        </div>
+                <div class="media-info">
+                    <h2 id="media-title">Media Title</h2>
+                    <div id="media-duration">0:00 / 0:00</div>
+                </div>
+            </section>
+
+            <section class="playlist-container">
+                <div class="playlist-header">
+                    <h3>Playlist</h3>
+                    <div class="playlist-controls">
+                        <button id="refresh-button" class="control-button">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button id="folder-button" class="control-button">
+                            <i class="fas fa-folder-open"></i>
+                        </button>
+                    </div>
+                </div>
+                <ul id="playlist-items" class="playlist-items">
+                    <!-- Playlist items will be inserted here -->
+                </ul>
+            </section>
+        </main>
     </div>
 
     <script src="player.js"></script>
