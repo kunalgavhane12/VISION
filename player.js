@@ -12,7 +12,7 @@ const refreshButton = document.getElementById('refresh-button');
 const folderButton = document.getElementById('folder-button');
 
 // Configuration
-const MEDIA_FOLDER = 'Playlist/'; // Current directory
+const MEDIA_FOLDER = './Playlist/'; // Current directory
 const MEDIA_EXTENSIONS = [
     '.mp4', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mkv', '.m4v', '.3gp',
     '.mp3', '.wav', '.ogg', '.aac', '.wma', '.flac'
