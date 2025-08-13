@@ -54,7 +54,7 @@ async function loadMediaFiles() {
             await loadFromDirectoryHandle();
         } 
         
-        // Fallback to server files
+        // For GitHub Pages, try manifest first, then fallback
         if (playlistItems.length === 0) {
             await loadFromServer();
         }
@@ -104,6 +104,36 @@ async function getMediaDuration(url, type) {
 
 async function loadFromServer() {
     try {
+        // Try manifest file first (for GitHub Pages)
+        const manifestResponse = await fetch('playlist-manifest.json');
+        if (manifestResponse.ok) {
+            const manifest = await manifestResponse.json();
+            
+            for (const item of manifest) {
+                const fullPath = `${MEDIA_FOLDER}/${item.filename}`;
+                
+                playlistItems.push({
+                    name: item.name,
+                    path: fullPath,
+                    type: item.type,
+                    duration: '0:00'
+                });
+            }
+            return;
+        }
+        
+        // Fallback to directory listing (for local development)
+        await loadFromDirectoryListing();
+        
+    } catch (error) {
+        console.log('Server load failed:', error);
+        // Try directory listing as final fallback
+        await loadFromDirectoryListing();
+    }
+}
+
+async function loadFromDirectoryListing() {
+    try {
         const response = await fetch(MEDIA_FOLDER);
         if (!response.ok) return;
         
@@ -122,12 +152,12 @@ async function loadFromServer() {
             playlistItems.push({
                 name: formatFileName(fileName),
                 path: fullPath,
-                type: extension.includes('mp3') ? 'audio' : 'video',
-                duration: '0:00' // Will be updated later
+                type: extension.includes('mp3') || extension.includes('.wav') || extension.includes('.ogg') || extension.includes('.aac') || extension.includes('.wma') || extension.includes('.flac') ? 'audio' : 'video',
+                duration: '0:00'
             });
         }
     } catch (error) {
-        console.log('Server load failed:', error);
+        console.log('Directory listing failed:', error);
     }
 }
 
@@ -223,6 +253,11 @@ function playNext() {
 }
 
 function updatePlaylistUI() {
+    if (playlistItems.length === 0) {
+        playlistItemsContainer.innerHTML = '<li class="no-media">No media files found. Try selecting a folder or check if files are properly deployed.</li>';
+        return;
+    }
+    
     playlistItemsContainer.innerHTML = playlistItems.map((item, index) => `
         <li class="playlist-item ${index === currentPlayingIndex ? 'active' : ''}">
             <i class="fas ${item.type === 'audio' ? 'fa-music' : 'fa-film'}"></i>
